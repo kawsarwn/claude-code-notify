@@ -19,13 +19,20 @@ case "$event" in
 esac
 [ -n "$message" ] || message="Claude needs your attention"
 
+# Idle reminders repeat what the Stop banner already said and pile up while you're away.
+[ "$(field notification_type)" = "idle_prompt" ] && exit 0
+[ "$message" = "Claude is waiting for your input" ] && exit 0
+
 if [ -n "${CLAUDE_NOTIFY_DRY_RUN:-}" ]; then
   printf '%s\n%s\n%s\n' "$project" "$sound" "$message"
   exit 0
 fi
 
-# Write to a hidden file, then rename, so the app never reads a half-written message.
 mkdir -p "$QUEUE"
+# Remember which app Claude runs in, so clicking the notification can open it.
+[ -n "${__CFBundleIdentifier:-}" ] && printf '%s' "$__CFBundleIdentifier" > "$HOME/.claude/notify-source"
+
+# Write to a hidden file, then rename, so the app never reads a half-written message.
 tmp=$(mktemp "$QUEUE/.XXXXXX") || exit 0
 printf '%s\n%s\n%s\n' "$project" "$sound" "$message" > "$tmp"
 msg="$QUEUE/$(date +%s)-${tmp##*/.}"

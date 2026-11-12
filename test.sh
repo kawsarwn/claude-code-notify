@@ -11,7 +11,9 @@ check() {
 
 check "stop" '{"hook_event_name":"Stop","cwd":"/Users/me/code/my-app"}' 'my-app|Glass|Claude finished|'
 check "permission" '{"hook_event_name":"Notification","cwd":"/x/api","message":"Claude needs your permission to use Bash"}' 'api|Ping|Claude needs your permission to use Bash|'
-check "idle" '{"hook_event_name":"Notification","cwd":"/x/api","message":"Claude is waiting for your input"}' 'api|Ping|Claude is waiting for your input|'
+check "idle by type" '{"hook_event_name":"Notification","cwd":"/x/api","notification_type":"idle_prompt","message":"Claude is idle"}' ''
+check "idle by message" '{"hook_event_name":"Notification","cwd":"/x/api","message":"Claude is waiting for your input"}' ''
+check "permission by type" '{"hook_event_name":"Notification","cwd":"/x/api","notification_type":"permission_prompt","message":"Claude needs your permission to use Bash"}' 'api|Ping|Claude needs your permission to use Bash|'
 check "quotes" '{"hook_event_name":"Notification","cwd":"/x/a b","message":"Use \"rm\"? it'"'"'s fine"}' "a b|Ping|Use \"rm\"? it's fine|"
 check "multiline" '{"hook_event_name":"Notification","cwd":"/x/api","message":"line one\nline two"}' 'api|Ping|line one line two|'
 check "no message" '{"hook_event_name":"Notification"}' '|Ping|Claude needs your attention|'

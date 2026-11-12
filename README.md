@@ -4,7 +4,9 @@
 
 macOS notifications for [Claude Code](https://docs.claude.com/en/docs/claude-code) with a proper icon, instead of the Script Editor scroll you get from `osascript`.
 
-You get a banner when Claude finishes a task or needs your attention. Each banner shows the project name and Claude's own message, for example "Claude needs your permission to use Bash".
+You get a banner when Claude finishes a task or needs your attention. Each banner shows the project name and Claude's own message, for example "Claude needs your permission to use Bash". Clicking it brings back the app Claude is running in (the Claude desktop app, Terminal, iTerm, VS Code...).
+
+Claude Code's idle reminders ("Claude is waiting for your input") are skipped: they repeat the "Claude finished" banner and pile up while you're away from your Mac.
 
 ## Why a tiny app?
 
@@ -54,6 +56,7 @@ The desktop app sends its own banners too, so you'd get two of each. Turn the ap
 1. Claude Code runs `claude-notify.sh` and passes the hook's JSON on stdin.
 2. The script reads the event, project folder and message with `plutil` (built into macOS), writes them to a temp file, and opens `ClaudeNotify.app` with that file.
 3. The app reads the file, deletes it, and posts the notification. Each notification gets its own file, so two alerts at once don't mix up their messages.
+4. The script also saves which app Claude runs in to `~/.claude/notify-source`. Clicking a notification relaunches ClaudeNotify with nothing queued, and it opens that app.
 
 ## Troubleshooting
 
