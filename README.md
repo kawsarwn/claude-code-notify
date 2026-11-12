@@ -6,6 +6,8 @@ macOS notifications for [Claude Code](https://docs.claude.com/en/docs/claude-cod
 
 You get a banner when Claude finishes a task or needs your attention. Each banner shows the project name and Claude's own message, for example "Claude needs your permission to use Bash". Clicking it brings back the app Claude is running in (the Claude desktop app, Terminal, iTerm, VS Code...).
 
+No banner while you're using the app Claude runs in. If you switch to another app, or step away for a minute, you get them.
+
 Claude Code's idle reminders ("Claude is waiting for your input") are skipped: they repeat the "Claude finished" banner and pile up while you're away from your Mac.
 
 ## Why a tiny app?

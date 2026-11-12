@@ -28,6 +28,13 @@ if [ -n "${CLAUDE_NOTIFY_DRY_RUN:-}" ]; then
   exit 0
 fi
 
+# Stay quiet while you're looking at the app Claude runs in. Idle for a minute (or locked) counts as away.
+front=$(lsappinfo info -only bundleid "$(lsappinfo front)" 2>/dev/null | sed -n 's/.*[Bb]undle[A-Za-z]*"*="\([^"]*\)".*/\1/p' | head -1)
+idle=$(ioreg -c IOHIDSystem | awk '/HIDIdleTime/ {print int($NF/1000000000); exit}')
+if [ -n "${__CFBundleIdentifier:-}" ] && [ "$front" = "$__CFBundleIdentifier" ] && [ "${idle:-0}" -lt 60 ]; then
+  exit 0
+fi
+
 mkdir -p "$QUEUE"
 # Remember which app Claude runs in, so clicking the notification can open it.
 [ -n "${__CFBundleIdentifier:-}" ] && printf '%s' "$__CFBundleIdentifier" > "$HOME/.claude/notify-source"

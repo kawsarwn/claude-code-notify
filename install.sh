@@ -31,7 +31,7 @@ touch "$APP"
 cp hooks/claude-notify.sh "$HOOK"
 chmod +x "$HOOK"
 
-echo '{"hook_event_name":"Notification","message":"Notifications are working."}' | "$HOOK"
+echo '{"hook_event_name":"Notification","message":"Notifications are working."}' | __CFBundleIdentifier= "$HOOK"
 
 cat <<MSG
 Installed:
